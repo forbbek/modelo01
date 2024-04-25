@@ -1,0 +1,73 @@
+import java.text.SimpleDateFormat
+
+pipeline {
+    agent any
+
+    options
+    {
+        timeout(time:10, unit: 'MINUTES')
+    }
+    
+    environment
+    {
+        directorio = "C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Modelo_01\\"
+    }
+    
+    stages {
+        stage('Acciones por días de la semana') {
+            steps {
+                script {
+                    echo 'Hello World'
+                    dia = new Date()
+                    println dia
+                    formato = new SimpleDateFormat("dd/MM/yyyy")
+                    fechaFormato = formato.format(dia)
+                    println fechaFormato
+                    mapa = [1: "Lunes", 2:"Martes", 3: "Miercoles", 4:"Jueves", 5:"Viernes", 6:"Sabado", 7:"Domingo"]
+                    dia_numero = new Date().getDay()
+                    dia_semana = mapa[dia_numero]
+
+                    println "El dia actual es: "+ dia_semana
+
+                    if (dia_semana == "Lunes")
+                    {
+                        numero1 = 3000
+                        numero2 = 1000
+                        numero3 = 3
+                        suma = numero1 + numero2
+                        resta = numero1 - numero2
+                        multiplicacion = numero1 * numero3
+                        division = numero1 / numero3
+                        println "numero1: " + numero1
+                        println "numero2: " + numero2
+                        println "numero3: " + numero3
+                        println "Suma: " + suma
+                        println "Resta:" + resta
+                        println "Multiplicacion: " + multiplicacion
+                        println "Division: " + division
+                    }
+                    else if(dia_semana == "Martes")
+                    {
+                        echo "Se ha realizado la ejecución en la fecha: ${fechaFormato}"
+                    }
+                    else if(dia_semana == "Miercoles")
+                    {
+                        echo "Se ha ejecutado el pipeline"
+                    }
+                    else if(dia_semana == "Jueves")
+                    {
+                        echo "Hoy en Madrid está nublado"
+                    }
+                    else if(dia_semana == "Viernes")
+                    {
+                        informacion = "Lo estas haciendo de maravilas!"
+                        archivo_nombre = directorio + "jenkinsfile.txt"
+                        writeFile(file: archivo_nombre, text: informacion)
+                    }else{
+                        echo "Otro día de la semana"
+                    }
+                }
+            }
+        }
+    }
+}
